@@ -17,12 +17,86 @@ app.use(cookieParser());
 
 //        MODELS
 const { User } = require('./models/user.js');
+const { Brand } = require('./models/brand.js');
+const { Wood } = require('./models/wood.js');
+const { Product } = require('./models/product.js')
 
 //        MIDDLEWARES
 const { auth } = require('./middleware/auth.js');
+const { admin } = require('./middleware/admin.js');
+
 
 //============================
-//         USERS
+//         PRODUCTS
+//============================
+
+app.post('/api/product/article', auth, admin, (req, res) => {
+    const product = new Product(req.body);
+
+    product.save( (err, doc) => {
+        if(err) return res.json({ success: false, err});
+        res.status(200).json({ 
+            success: true,
+            product: doc
+        })
+    })
+})
+
+app.get('/api/product/articles', (req, res) => {
+
+})
+
+//============================
+//           WOODS
+//============================
+
+app.post('/api/product/wood', auth, admin, (req, res) => {
+    const wood = new Wood(req.body);
+
+    wood.save( (err, doc) => {
+        if(err) return res.json({ success: false, err });
+        res.status(200).json({
+            success: true,
+            wood: doc
+        })
+    })
+})
+
+app.get('/api/product/woods', (req, res) => {
+    Wood.find({}, (err, woods) => {
+        if(err) return res.status(400).send(err)
+        res.status(200).send(woods)
+    })
+})
+
+
+//============================
+//           BRAND
+//============================
+
+app.post('/api/product/brand', auth, admin, (req, res) => {
+    const brand = new Brand(req.body);
+
+    brand.save( (err, doc) => {
+        if(err) return res.json({ success: false, err });
+        res.status(200).json({
+            success: true,
+            brand: doc
+        })
+    })
+
+})
+
+app.get('/api/product/brands', (req, res) => {
+    Brand.find({}, (err, brands) => {
+        if(err) return res.status(400).send(err);
+        res.status(200).send(brands)
+    })
+})
+
+
+//============================
+//           USERS
 //============================
 
 app.get('/api/users/auth', auth, (req, res) => {
