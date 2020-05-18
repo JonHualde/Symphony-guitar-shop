@@ -47,9 +47,28 @@ app.get('/api/product/articles_by_id', (req, res) => {
     })
     .populate('brand')
     .populate('wood')
-    .exec((err, doc) => {
-        return res.status(200).send(doc)
+    .exec((err, articles) => {
+        if(err) return res.json({ success: false, err })
+        return res.status(200).send(articles)
     })
+})
+
+app.get('/api/product/articles', (req, res) => {
+
+    let order = req.query.order ? req.query.order : 'asc';
+    let sortBy = req.query.sortBy ? req.query.sortBy : '_id';
+    let limit = req.query.limit ? parseInt(req.query.limit) : 100;
+    
+    Product.find()
+    .populate('brand')
+    .populate('wood')
+    .sort([[sortBy, order]])
+    .limit(limit)
+    .exec((err, articles) => {
+        if(err) return res.json({ success: false, err });
+        return res.status(200).send(articles)
+    })
+
 })
 
 
