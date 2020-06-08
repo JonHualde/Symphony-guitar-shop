@@ -33,6 +33,13 @@ export const validate = (element, formData = []) => {
         const message = `${!valid ? 'Must be a valid email address' : null }`;
         error = !valid ? [valid, message] : error;
     }
+
+    if(element.validation.confirm){
+        const valid = element.value.trim() === formData[element.validation.confirm].value ;
+        const message = `${!valid ? 'Password does not match' : null }`;
+        error = !valid ? [valid, message] : error;
+    }
+
     if(element.validation.required){
         const valid = element.value.trim() !== '';
         const message = `${!valid ? 'This field is required' : null }`;
@@ -42,12 +49,14 @@ export const validate = (element, formData = []) => {
 }
 
 
-// ------ GENERATE DATA FROM THE FORM ------ //
+// ------ GENERATES DATA FROM THE FORM ------ //
 export const generateData = ( formData, formName ) => {
     let dataToSubmit = {};
     
     for (let key in formData) {
-        dataToSubmit[key] = formData[key].value; 
+        if(key !== 'confirmPassword'){
+            dataToSubmit[key] = formData[key].value; 
+        }
     }
 
     return dataToSubmit;
