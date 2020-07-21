@@ -6,7 +6,7 @@ body {
 }
 
 .container {
-    width:1100px;
+    width: 100%;
     margin: 0 auto;
 }
 .page_container {
@@ -247,14 +247,18 @@ header {
     position: fixed;
     z-index: 999;
     width: 100%;
+    box-sizing: border-box;
     border-bottom: 1px solid white;
 }
 
 header .logo {
     font-family: 'Monoton', cursive;
     color: #ffffff;
-    font-size: 40px;
-    padding: 11px 0px;
+    font-size: 4.5vw;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 header a {
@@ -266,7 +270,8 @@ header .container {
 }
 
 header .container .left{
-    width: 250px;
+    width: 35%;
+    position: relative;
 }
 
 header .container .right{
@@ -321,7 +326,7 @@ footer .logo {
     text-align: center;
     font-family: 'Monoton', cursive;
     color: #ffffff;
-    font-size: 40px;
+    font-size: 100%;
     padding: 11px 0px;
     border-bottom: 1px solid #4d4d4d;
 }

@@ -3,14 +3,16 @@ import { connect } from 'react-redux'
 import { update, generateData, isFormValid } from '../utils/Forms/FormActions.js';
 
 import FormField from '../utils/Forms/FormField.js'
-import FormAction from '../utils/Forms/FormActions.js'
+import { registerUser } from '../../Redux/actions/user_actions.js'
+
+import Dialog from '@material-ui/core/Dialog';
 
 class Register extends Component {
 
     state = {
         formError: false,
-            formSuccess: '',
-            formData: {
+        formSuccess: false,
+        formData: {
                 name: {
                     element: 'input',
                     value: '',
@@ -98,7 +100,23 @@ class Register extends Component {
         let formIsValid = isFormValid(this.state.formData, 'login');
 
         if(formIsValid) {
-            console.log(dataToSubmit, 'data to submit')
+            this.props.dispatch(registerUser(dataToSubmit))
+                .then(response => {
+                    if(response.payload.success){
+                        console.log(response.payload, 'response')
+                        this.setState({
+                            formError: false,
+                            formSuccess: true
+                        });
+                        setTimeout(() => {
+                            this.props.history.push('/register_login')
+                        }, 3000);
+                    } else {
+                        this.setState({
+                            formError: true
+                        })
+                    }
+                })
         } else {
             this.setState({
                 formError: true
@@ -177,9 +195,20 @@ class Register extends Component {
                     </div>
                 </div>
             </div>
+
+        <Dialog open={this.state.formSuccess}>
+            <div className="dialog_alert">
+                <div>Congratulations! </div>
+                <div>
+                    You are going to be redirected to the login page in a couple of seconds...
+                </div>
+            </div>
+        </Dialog>
         </div>
     )
     }
 }
+
+
 
 export default connect()(Register);
